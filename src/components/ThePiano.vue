@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import * as Tone from 'tone'
+
 const emit = defineEmits<{
   (e: 'keyPushed', keyName: string): void
 }>()
 
+const synth = new Tone.Synth().toDestination();
+
 function keyPushed(keyName: string) {
   emit('keyPushed', keyName)
+  
+  synth.triggerAttackRelease(keyName+'4', '8n')
 }
 </script>
 
