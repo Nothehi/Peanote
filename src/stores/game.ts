@@ -1,43 +1,89 @@
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
+import { ref, type Ref } from 'vue'
+
+interface Result {
+  pushed_at: Date,
+  currentKey: string
+  pushedKey: string
+  result: boolean,
+  pushCount: number
+}
 
 export const useGameStore = defineStore('game', () => {
   const score = ref(0)
   const isRunning = ref(false)
   const timerCount = ref(0)
   const currentKey = ref('')
-
-  watch(timerCount, () => {
-    if (timerCount.value > 0 && isRunning.value) {
-      setTimeout(() => {
-        timerCount.value -= 1
-      }, 1000)
-    } else {
-      timerCount.value = 60
-      isRunning.value = false
-      currentKey.value = ''
-
-      if (score.value > Number(localStorage.getItem('record'))) {
-        localStorage.setItem('record', String(score.value))
-      }
-    }
-  })
+  const result: Ref<Array<Result>> = ref([])
 
   function run() {
     isRunning.value = true
-    timerCount.value = 60
-
+    timerCount.value = 30
     currentKey.value = pickRandomNote()
+
+    startTimer()
   }
 
-  function compareNote(keyName: string) {
+  function startTimer() {
+    const timer = setInterval(() => {
+      if (isRunning.value && timerCount.value > 0) {
+        timerCount.value -= 1
+      } else {
+        clearInterval(timer)
+        end()
+      }
+    }, 1000)
+  }
+
+  function end() {
+    isRunning.value = false
+    currentKey.value = ''
+
+    storeRecord()
+
+    storeHighestScore()
+    score.value = 0
+  }
+
+  function storeRecord() {
+    let records = JSON.parse(String(localStorage.getItem('records')))
+
+    console.log(records);
+
+    if (records) {
+      records.push({
+        created_at: new Date(),
+        result: result.value
+      })
+    } else {
+      records = [
+        {
+          created_at: new Date(),
+          result: result.value
+        }
+      ]
+    }
+
+    localStorage.setItem('records', JSON.stringify(records))
+    result.value = []
+  }
+
+  function storeHighestScore() {
+    if (score.value > Number(localStorage.getItem('highest_score'))) {
+      localStorage.setItem('highest_score', String(score.value))
+    }
+  }
+
+  function compareNote(keyName: string): boolean {
     if (keyName == currentKey.value.split('')[0]) {
       score.value += 1
-
       currentKey.value = pickRandomNote()
-    } else {
-      timerCount.value -= 2
+
+      return true
     }
+
+    timerCount.value -= 2
+    return false
   }
 
   function pickRandomNote(): string {
@@ -51,8 +97,10 @@ export const useGameStore = defineStore('game', () => {
     score,
     isRunning,
     timerCount,
+    result,
     currentKey,
     compareNote,
-    run
+    run,
+    end
   }
 })

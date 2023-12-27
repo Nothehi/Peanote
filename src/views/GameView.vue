@@ -4,15 +4,31 @@ import { RouterLink } from 'vue-router'
 import TheStaff from '@/components/TheStaff.vue'
 import ThePiano from '@/components/ThePiano.vue'
 import GClef from '@/assets/g-clef.png'
+import { onUnmounted, ref } from 'vue'
 
 const game = useGameStore()
+const pushCount = ref(0)
+
+function keyPushed(keyName: string) {
+  game.result.push({
+    pushed_at: new Date(),
+    currentKey: game.currentKey,
+    pushedKey: keyName,
+    result: game.compareNote(keyName),
+    pushCount: pushCount.value
+  })
+
+  pushCount.value += 1
+}
+
+onUnmounted(() => game.end())
 </script>
 
 <template>
   <div class="flex flex-col items-center justify-center h-full">
-    <header class="flex flex-col items-center justify-center w-full h-1/3">
+    <header class="flex flex-col items-center justify-end w-full h-1/3">
       <span class="absolute mb-5 right-5 top-5 text-secondary">{{ game.timerCount }} s</span>
-      <span class="absolute left-5 top-5 text-secondary">score: {{ game.score }}</span>
+      <span class="absolute left-5 top-5 text-secondary">Score: {{ game.score }}</span>
       <img :src="GClef" alt="G Clef" class="max-w-20" />
       <h4 class="mt-5 text-xl font-bold text-primary">G Clef</h4>
     </header>
@@ -41,7 +57,7 @@ const game = useGameStore()
         >
       </div>
 
-      <the-piano @key-pushed="game.compareNote" />
+      <the-piano @key-pushed="keyPushed" />
     </footer>
   </div>
 </template>
