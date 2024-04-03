@@ -1,36 +1,26 @@
 <script setup lang="ts">
-import { useToneStore } from '@/stores/tone'
 import PianoKey from './PianoKey.vue'
-
-const emit = defineEmits<{
-  (e: 'keyPushed', keyName: string): void
-}>()
-
-const tone = useToneStore()
-
-function keyPushDown(keyName: string) {
-  tone.play(`${keyName}4`)
-}
-
-function keyPushUp(keyName: string) {
-  emit('keyPushed', keyName)
-  tone.stop(`${keyName}4`)
-}
 </script>
 
 <template>
-    <div class="box-border relative flex flex-row items-start justify-start w-full h-full">
-		<piano-key note="c"/>
-		<piano-key note="c#"/>
-		<piano-key note="d"/>
-		<piano-key note="d#"/>
-		<piano-key note="e"/>
-		<piano-key note="f"/>
-		<piano-key note="f#"/>
-		<piano-key note="g"/>
-		<piano-key note="g#"/>
-		<piano-key note="a"/>
-		<piano-key note="a#"/>
-		<piano-key note="b"/>
-    </div>
+	<div class="grid w-full h-full grid-cols-1">
+		<div class="flex flex-row w-full h-full col-start-1 row-start-1">
+			<piano-key note="c" />
+			<piano-key note="d" />
+			<piano-key note="e" />
+			<piano-key note="f" />
+			<piano-key note="g" />
+			<piano-key note="a" />
+			<piano-key note="b" />
+		</div>
+
+		<div class="z-10 flex flex-row w-full col-start-1 row-start-1 -mt-1 space-x-2 px-7 h-1/2">
+			<piano-key black note="c#" />
+			<piano-key black note="d#" />
+			<piano-key black note="" class="invisible" />
+			<piano-key black note="f#" />
+			<piano-key black note="g#" />
+			<piano-key black note="a#" />
+		</div>
+	</div>
 </template>
