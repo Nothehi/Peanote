@@ -4,7 +4,7 @@ import PianoKey from './PianoKey.vue'
 
 <template>
 	<div class="grid w-full h-full grid-cols-1">
-		<div class="flex flex-row w-full h-full col-start-1 row-start-1">
+		<div class="flex flex-row w-full h-full col-start-1 row-start-1 space-x-0.5">
 			<piano-key note="c" />
 			<piano-key note="d" />
 			<piano-key note="e" />
