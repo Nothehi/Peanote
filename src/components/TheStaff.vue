@@ -1,7 +1,15 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import * as Tone from 'tone'
+import { onMounted, reactive, ref, watch } from 'vue';
+import QuarterNote from '@/components/QuraterNote.vue'
 
-const positions = reactive({
+interface Props {
+    sheet: Array<string>
+}
+defineProps<Props>()
+
+
+const positions: { [key: string]: string } = reactive({
     D4: 'mt-[3.7rem]',
     E4: 'mt-[2.7rem]',
     F4: 'mt-[1.5rem]',
@@ -14,6 +22,29 @@ const positions = reactive({
     F5: 'mt-[-2.5rem] rotate-180',
     G5: 'mt-[-3.5rem] rotate-180',
 })
+
+const bpm = ref(30)
+const sheetPos = ref(0)
+const starterNotePosition = ref(-55)
+const noteDistance = ref(80)
+
+const synth = new Tone.Synth().toDestination();
+onMounted(() => {
+    // setInterval(() => {
+    //     sheetPos.value -= 0.8
+    // }, 60 / bpm.value * 10)
+
+    // setInterval(() => {
+    //     synth.triggerAttackRelease("C4", "16n");
+    // }, 60 / bpm.value * 1000)
+})
+
+// watch(sheetPos, (value) => {
+//     if (value < -50 && value > -60) {
+//         console.log(value);
+//     }
+// })
+
 </script>
 
 <template>
@@ -37,11 +68,26 @@ const positions = reactive({
             <div class="absolute w-2 bg-gray-300 rounded-lg h-1/2 left-24 opacity-35"></div>
 
             <div class="flex items-center justify-start w-full h-full overflow-hidden">
-                <div class="flex flex-row *:ml-16 " :style="`transform: translate(${sheetPos}px, 0);`">
-                <slot :positions="positions"></slot>
+                <div class="flex flex-row *:ml-16" :style="`transform: translate(${sheetPos}px, 0);`">
+                    <quarter-note v-for="(note, idx) in sheet" :key="idx" :class="`${positions[note]}`" />
                 </div>
             </div>
         </div>
-
     </div>
 </template>
+
+<style scoped>
+.slide-fade-enter-active {
+    transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+    transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+    transform: translateX(20px);
+    opacity: 0;
+}
+</style>
