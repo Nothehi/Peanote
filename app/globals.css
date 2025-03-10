@@ -45,6 +45,82 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+@theme {
+  --color-mint-100: #e1f4f1;
+  --color-mint-200: #c4e9e3;
+  --color-mint-300: #a6ddd5;
+  --color-mint-400: #86c1b8;
+  --color-mint-500: #6ba89f;
+  --color-mint-600: #489387;
+  --color-mint-700: #3d8276;
+  --color-mint-800: #388074;
+  --color-mint-900: #2b6a5f;
+  --color-mint-950: #1d5248;
+
+  --color-mustard-100: #fff4dc;
+  --color-mustard-200: #ffe5b4;
+  --color-mustard-300: #ffd78c;
+  --color-mustard-400: #ffc153;
+  --color-mustard-500: #f7b137;
+  --color-mustard-600: #d99830;
+  --color-mustard-700: #b77d2b;
+  --color-mustard-800: #785b27;
+  --color-mustard-900: #57421c;
+  --color-mustard-950: #3d2d14;
+
+  --color-cherry-100: #fdecef;
+  --color-cherry-200: #fbcfd7;
+  --color-cherry-300: #f7aebd;
+  --color-cherry-400: #f2839f;
+  --color-cherry-500: #ec6a84;
+  --color-cherry-600: #e05073;
+  --color-cherry-700: #d95771;
+  --color-cherry-800: #b7465d;
+  --color-cherry-900: #943549;
+  --color-cherry-950: #732634;
+
+  --color-linen-100: #fcfee8;
+  --color-linen-200: #eff0d9;
+  --color-linen-300: #e0e1c7;
+  --color-linen-400: #c8c9ae;
+  --color-linen-500: #a9aa93;
+  --color-linen-600: #7c7d72;
+  --color-linen-700: #6b6c62;
+  --color-linen-800: #5a5a57;
+  --color-linen-900: #464644;
+  --color-linen-950: #2f2f2e;
+
+  --font-borna: 'Borna';
+
+  --crosshatch-size-1: 4px;
+  --crosshatch-size-2: 8px;
+  --crosshatch-size-3: 12px;
+  --crosshatch-size-4: 16px;
+  --crosshatch-size-5: 20px;
+  --crosshatch-size-6: 24px;
+  --crosshatch-size-7: 28px;
+  --crosshatch-size-8: 32px;
+  --crosshatch-size-9: 36px;
+  --crosshatch-size-10: 40px;
+}
+
+@utility crosshatch-* {
+  background-image: linear-gradient(
+    45deg,
+    --value(--color- *) 25%,
+    transparent 25%,
+    transparent 50%,
+    --value(--color- *) 50%,
+    --value(--color- *) 75%,
+    transparent 75%,
+    transparent
+  );
+}
+
+@utility crosshatch-size-* {
+  background-size: --value(--crosshatch-size- *) --value(--crosshatch-size- *);
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.147 0.004 49.25);
