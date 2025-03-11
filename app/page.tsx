@@ -1,4 +1,5 @@
 import Header from '@/app/components/header'
+import Streak from '@/app/components/streak';
 
 const user = {
   name: "حسین",
@@ -9,7 +10,9 @@ const user = {
 export default function Home() {
   return (
     <>
-      <Header {...user} />
+      <Header {...user}>
+        <Streak current={14} target={50} />
+      </Header>
     </>
   );
 }
